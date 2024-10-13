@@ -122,3 +122,36 @@ impl ToJsonTreeValue for simd_json::owned::Value {
         )
     }
 }
+
+impl ToJsonTreeValue for gr::Scalar {
+    fn to_json_tree_value(&self) -> JsonTreeValue<Self> {
+        match self {
+            gr::Scalar::Null => JsonTreeValue::Base(self, self, BaseValueType::Null),
+            gr::Scalar::Bool(b) => JsonTreeValue::Base(self, b, BaseValueType::Bool),
+            gr::Scalar::Number(n) => JsonTreeValue::Base(self, n, BaseValueType::Number),
+            gr::Scalar::String(s) => JsonTreeValue::Base(self, s, BaseValueType::String),
+            gr::Scalar::List(arr) => JsonTreeValue::Expandable(
+                arr.iter()
+                    .enumerate()
+                    .map(|(idx, elem)| (JsonPointerSegment::Index(idx), elem))
+                    .collect(),
+                ExpandableType::Array,
+            ),
+            gr::Scalar::Object(obj) => JsonTreeValue::Expandable(
+                obj.iter()
+                    .map(|(key, val)| (JsonPointerSegment::Key(key), val))
+                    .collect(),
+                ExpandableType::Object,
+            ),
+            gr::Scalar::Error(err) => JsonTreeValue::Base(self, err, BaseValueType::String),
+            gr::Scalar::Undefined => JsonTreeValue::Base(self, self, BaseValueType::Null),
+            gr::Scalar::Node(_node_key, gref) => {
+                JsonTreeValue::Base(self, gref, BaseValueType::String)
+            }
+        }
+    }
+
+    fn is_expandable(&self) -> bool {
+        matches!(self, gr::Scalar::List(_) | gr::Scalar::Object(_))
+    }
+}
