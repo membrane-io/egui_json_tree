@@ -4,9 +4,9 @@ use std::fmt::Display;
 
 use egui::{
     Color32, FontId, Label, Response, Sense, TextFormat, Ui,
+    cache::{ComputerMut, FrameCache},
     collapsing_header::CollapsingState,
     text::LayoutJob,
-    util::cache::{ComputerMut, FrameCache},
 };
 
 use crate::{
@@ -296,7 +296,7 @@ fn render_value(
             value_type,
             search_term,
             &style.resolve_font_id(ui),
-        ))
+        )).clone()
     });
     job.wrap = style.resolve_value_text_wrapping(parent_status, ui);
     render_job(ui, job)
@@ -372,7 +372,7 @@ fn render_property(
             property,
             search_term,
             &style.resolve_font_id(ui),
-        ))
+        )).clone()
     });
 
     render_job(ui, job)

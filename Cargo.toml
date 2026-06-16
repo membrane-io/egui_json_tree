@@ -12,6 +12,6 @@ repository = "https://github.com/dmackdev/egui_json_tree"
 [workspace.dependencies]
 egui = { path = "../egui/crates/egui", default-features = false }
 gr = { path = "../crates/gr" }
-eframe = "0.33"
-egui_kittest = "0.33"
+eframe = "0.34"
+egui_kittest = "0.34"
 serde_json = { version = "1" }
