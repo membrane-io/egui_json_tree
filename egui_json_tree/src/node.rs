@@ -28,7 +28,7 @@ pub(crate) struct JsonTreeNode<'a, 'b, T: ToJsonTreeValue> {
 
 impl<'a, 'b, T: ToJsonTreeValue> JsonTreeNode<'a, 'b, T> {
     pub(crate) fn show(tree: JsonTree<'a, T>, ui: &mut Ui) -> JsonTreeResponse {
-        let persistent_id = ui.id();
+        let persistent_id = ui.scope_id();
         let tree_id = tree.id;
         let make_persistent_id =
             |path_segments: &[JsonPointerSegment]| persistent_id.with(tree_id.with(path_segments));

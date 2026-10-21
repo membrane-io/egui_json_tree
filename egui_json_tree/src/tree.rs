@@ -38,7 +38,7 @@ impl<'a, T: ToJsonTreeValue> JsonTree<'a, T> {
     /// `id` must be a globally unique identifier.
     pub fn new(id: impl Hash + std::fmt::Debug, value: &'a T) -> Self {
         Self {
-            id: Id::new(id),
+            id: Id::unique(id),
             value,
             config: JsonTreeConfig::default(),
         }
